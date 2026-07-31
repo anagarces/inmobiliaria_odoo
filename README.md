@@ -6,28 +6,42 @@ Entorno Docker para desarrollo de Odoo 18.0.
 
 ```
 .
-├── addons/             Módulos custom (montado en /mnt/extra-addons)
-├── config/odoo.conf    Configuración de Odoo
-├── docker-compose.yml  Servicios: db (Postgres 15) y odoo
-├── Dockerfile          Imagen odoo:18.0 + dependencias de requirements.txt
-├── requirements.txt    Dependencias Python adicionales para addons custom
-└── .env                Variables de entorno (no versionado, ver .env.example)
+├── addons/                    Módulos custom (montado en /mnt/extra-addons)
+├── config/odoo.conf.example   Plantilla de configuración de Odoo (versionada)
+├── config/odoo.conf           Configuración real, con credenciales (NO versionado)
+├── docker-compose.yml         Servicios: db (Postgres 15) y odoo
+├── Dockerfile                 Imagen odoo:18.0 + dependencias de requirements.txt
+├── requirements.txt           Dependencias Python adicionales para addons custom
+├── .env.example               Plantilla de variables de entorno (versionada)
+└── .env                       Variables de entorno reales (NO versionado)
 ```
 
 ## Primer arranque
 
-1. Copiar el archivo de variables de entorno:
+1. Copiar el archivo de variables de entorno y ajustar `POSTGRES_PASSWORD`:
    ```bash
    cp .env.example .env
    ```
-   Ajustar `POSTGRES_PASSWORD` y `ADMIN_PASSWD` antes de usar en un entorno compartido.
 
-2. Levantar los servicios:
+2. Copiar la plantilla de configuración de Odoo y fijar un `admin_passwd` propio (es la master password que permite crear/eliminar/restaurar bases de datos):
+   ```bash
+   cp config/odoo.conf.example config/odoo.conf
+   ```
+   Editar `admin_passwd` en `config/odoo.conf` con un valor fuerte y único.
+
+3. Levantar los servicios:
    ```bash
    docker compose up -d --build
    ```
 
-3. Abrir [http://localhost:8069](http://localhost:8069) y crear la base de datos desde el asistente inicial.
+4. Abrir [http://localhost:8069](http://localhost:8069) y crear la base de datos desde el asistente inicial.
+
+## Seguridad y credenciales
+
+- `.env` y `config/odoo.conf` contienen credenciales reales y están en `.gitignore`: nunca deben commitearse. Solo se versionan sus plantillas (`.env.example`, `config/odoo.conf.example`).
+- Antes de commitear, revisar con `git status` / `git diff --cached` que ninguno de los dos archivos reales aparezca en el staging area.
+- Si algún secreto llega a commitearse, cambiar la credencial inmediatamente (rotar `admin_passwd` y `POSTGRES_PASSWORD`) y reescribir el historial de git para eliminarlo — cambiar el valor en un commit nuevo no lo borra del historial.
+- En producción, considerar mover estas credenciales a un gestor de secretos (Docker secrets, Vault, variables de entorno del orquestador) en lugar de archivos locales.
 
 ## Comandos útiles
 

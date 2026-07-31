@@ -1,5 +1,6 @@
 # Secrets / entorno local
 .env
+config/odoo.conf
 
 # Python
 __pycache__/
