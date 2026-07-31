@@ -1,0 +1,5 @@
+# Dependencias Python adicionales para módulos custom.
+# Se instalan en la imagen sobre las que ya trae Odoo 18 por defecto.
+# Ejemplo:
+# reportlab
+# num2words

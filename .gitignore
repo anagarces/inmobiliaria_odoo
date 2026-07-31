@@ -1,0 +1,16 @@
+# Secrets / entorno local
+.env
+
+# Python
+__pycache__/
+*.pyc
+
+# Odoo
+*.log
+filestore/
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
