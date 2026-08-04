@@ -39,8 +39,8 @@
                             <field name="selling_price"/>
                         </group>
                     </group>
-                    <notebook>
-                        <page string="Description">
+                    <notebook> <!--Sistema de pestanas (tabs)-->
+                        <page string="Description"> <!--Pestana individual-->
                             <field name="description"/>
                             <field name="bedrooms"/>
                             <field name="living_area" string="Living Area (sqm)"/>
