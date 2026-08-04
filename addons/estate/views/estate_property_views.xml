@@ -41,20 +41,48 @@
                     </group>
                     <notebook> <!--Sistema de pestanas (tabs)-->
                         <page string="Description"> <!--Pestana individual-->
+                        <group>
                             <field name="description"/>
-                            <field name="bedrooms"/>
-                            <field name="living_area" string="Living Area (sqm)"/>
-                            <field name="facades"/>
-                            <field name="garage"/>
-                            <field name="garden"/>
-                            <field name="garden_area" string="Garden Area (sqm)"/>
-                            <field name="garden_orientation"/>
+                        </group>
+                            <group>
+                                <field name="bedrooms"/>
+                                <field name="living_area" string="Living Area (sqm)"/>
+                                <field name="facades"/>
+                                <field name="garage"/>
+                                <field name="garden"/>
+                                <field name="garden_area" string="Garden Area (sqm)"/>
+                                <field name="garden_orientation"/>
+                            </group>
                         </page>
                     </notebook>
                 </sheet>
             </form>
         </field>
     </record> 
+
+<!--Vista tipo search-->
+    <record id="estate_property_view_search" model="ir.ui.view">
+    <field name="name">estate.property.search</field>
+    <field name="model">estate.property</field>
+    <field name="arch" type="xml">
+        <search>
+        <!--Se definen los campos que pueden ser buscados-->
+            <field name="name" string="Title"/>
+            <field name="postcode"/>
+            <field name="expected_price"/>
+            <field name="bedrooms"/>
+            <field name="living_area" string="Living Area (sqm)"/>
+            <field name="facades"/>
+            <!--Busqueda predefinida desde la vista, atajo-->
+            <filter name="available" string="Available"
+                    domain="[('state', 'in', ['new', 'offer_received'])]"/>
+
+            <group expand="0" string="Group By">
+                <filter name="postcode" string="Postcode" context="{'group_by': 'postcode'}"/>
+            </group>
+        </search>
+    </field>
+</record>
 
 <!---Action-->
     <record id="estate_property_action" model="ir.actions.act_window">
