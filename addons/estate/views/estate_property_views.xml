@@ -66,13 +66,14 @@
     <field name="model">estate.property</field>
     <field name="arch" type="xml">
         <search>
+        <!--Se definen los campos que pueden ser buscados-->
             <field name="name" string="Title"/>
             <field name="postcode"/>
             <field name="expected_price"/>
             <field name="bedrooms"/>
             <field name="living_area" string="Living Area (sqm)"/>
             <field name="facades"/>
-
+            <!--Busqueda predefinida desde la vista, atajo-->
             <filter name="available" string="Available"
                     domain="[('state', 'in', ['new', 'offer_received'])]"/>
 
