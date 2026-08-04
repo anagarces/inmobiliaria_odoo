@@ -42,13 +42,15 @@
                     <notebook> <!--Sistema de pestanas (tabs)-->
                         <page string="Description"> <!--Pestana individual-->
                             <field name="description"/>
-                            <field name="bedrooms"/>
-                            <field name="living_area" string="Living Area (sqm)"/>
-                            <field name="facades"/>
-                            <field name="garage"/>
-                            <field name="garden"/>
-                            <field name="garden_area" string="Garden Area (sqm)"/>
-                            <field name="garden_orientation"/>
+                            <group>
+                                <field name="bedrooms"/>
+                                <field name="living_area" string="Living Area (sqm)"/>
+                                <field name="facades"/>
+                                <field name="garage"/>
+                                <field name="garden"/>
+                                <field name="garden_area" string="Garden Area (sqm)"/>
+                                <field name="garden_orientation"/>
+                            </group>
                         </page>
                     </notebook>
                 </sheet>
