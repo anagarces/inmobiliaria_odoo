@@ -42,3 +42,6 @@ class EstateProperty(models.Model):
         default="new",
         copy=False
     )
+    property_type_id = fields.Many2one("estate.property.type")
+    buyer_id = fields.Many2one("res.partner", string="Buyer")
+    seller_id = fields.Many2one("res.partner", string="Seller")

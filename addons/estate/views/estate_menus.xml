@@ -4,4 +4,10 @@
             <menuitem id="estate_menu_properties" action="estate_property_action"/>
         </menuitem>
     </menuitem>
+
+      <menuitem id="estate_menu_root" name="Settings">
+        <menuitem id="estate_menu_property_type" name="Property Types">
+            <menuitem id="estate_menu_properties" action="estate_property_type_action"/>
+        </menuitem>
+    </menuitem>
 </odoo>
