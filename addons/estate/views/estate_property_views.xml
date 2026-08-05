@@ -60,29 +60,29 @@
         </field>
     </record> 
 
-<!--Vista tipo search-->
+    <!--Vista tipo search-->
     <record id="estate_property_view_search" model="ir.ui.view">
-    <field name="name">estate.property.search</field>
-    <field name="model">estate.property</field>
-    <field name="arch" type="xml">
-        <search>
-        <!--Se definen los campos que pueden ser buscados-->
-            <field name="name" string="Title"/>
-            <field name="postcode"/>
-            <field name="expected_price"/>
-            <field name="bedrooms"/>
-            <field name="living_area" string="Living Area (sqm)"/>
-            <field name="facades"/>
-            <!--Busqueda predefinida desde la vista, atajo-->
-            <filter name="available" string="Available"
-                    domain="[('state', 'in', ['new', 'offer_received'])]"/>
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search>
+            <!--Se definen los campos que pueden ser buscados-->
+                <field name="name" string="Title"/>
+                <field name="postcode"/>
+                <field name="expected_price"/>
+                <field name="bedrooms"/>
+                <field name="living_area" string="Living Area (sqm)"/>
+                <field name="facades"/>
+                <!--Busqueda predefinida desde la vista, atajo-->
+                <filter name="available" string="Available"
+                        domain="[('state', 'in', ['new', 'offer_received'])]"/>
 
-            <group expand="0" string="Group By">
-                <filter name="postcode" string="Postcode" context="{'group_by': 'postcode'}"/>
-            </group>
-        </search>
-    </field>
-</record>
+                <group expand="0" string="Group By">
+                    <filter name="postcode" string="Postcode" context="{'group_by': 'postcode'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
 
 <!---Action-->
     <record id="estate_property_action" model="ir.actions.act_window">
