@@ -60,7 +60,7 @@
                         <!---Pestana Other Info-->
                         <page string="Other Info"> 
                             <group>
-                                <field name="seller_id" string="Salesman"/>
+                                <field name="salesperson_id" string="Salesman"/>
                                 <field name="buyer_id"/>
                             </group>
                         </page>
