@@ -66,6 +66,14 @@
                                 <field name="buyer_id"/>
                             </group>
                         </page>
+                        <!---Pestana Ofertas-->
+                         <page string="Offers"> 
+                            <group>
+                                <field name="price"/>
+                                <field name="partner_id"/>
+                                <field name="status"/>
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
