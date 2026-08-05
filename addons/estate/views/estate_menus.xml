@@ -1,13 +1,12 @@
 <odoo>
+  
     <menuitem id="estate_menu_root" name="Real Estate">
         <menuitem id="estate_menu_advertisements" name="Advertisements">
             <menuitem id="estate_menu_properties" action="estate_property_action"/>
         </menuitem>
-    </menuitem>
-
-      <menuitem id="estate_menu_root" name="Settings">
-        <menuitem id="estate_menu_property_type" name="Property Types">
-            <menuitem id="estate_menu_properties" action="estate_property_type_action"/>
+        <menuitem id="estate_menu_settings" name="Settings">
+            <menuitem id="estate_menu_property_types" name="Property Types" action="estate_property_type_action"/>
         </menuitem>
     </menuitem>
+
 </odoo>
