@@ -67,12 +67,14 @@
                             </group>
                         </page>
                         <!---Pestana Ofertas-->
-                         <page string="Offers"> 
-                            <group>
-                                <field name="price"/>
-                                <field name="partner_id"/>
-                                <field name="status"/>
-                            </group>
+                         <page string="Offers">
+                            <field name="offer_ids">
+                                <list editable="bottom">
+                                    <field name="price"/>
+                                    <field name="partner_id"/>
+                                    <field name="status"/>
+                                </list>
+                            </field>
                         </page>
                     </notebook>
                 </sheet>
