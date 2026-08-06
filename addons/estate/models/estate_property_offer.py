@@ -28,8 +28,19 @@ class EstatePropertyOffer(models.Model):
             start_date = record.create_date.date() if record.create_date else fields.Date.today()
             record.date_deadline = start_date + timedelta(days=record.validity)
 
-
     def _inverse_date_deadline(self):
         for record in self:
             start_date = record.create_date.date() if record.create_date else fields.Date.today()
             record.validity = (record.date_deadline - start_date).days
+
+
+#Acciones para botones en page de ofertas
+    def action_accept_offer(self):
+        for record in self:
+            record.status = "accepted"
+            record.property_id.buyer_id = record.partner_id
+            record.property_id.selling_price = record.price
+
+    def action_refuse_offer(self):
+        for record in self:
+            record.status = "refused"
