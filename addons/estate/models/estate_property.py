@@ -49,8 +49,7 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id")
     total_area = fields.Float(compute="_compute_total_area")
 
-#Calcular el area total
-@api.depends("living_area", "garden_area")
-def _compute_total_area(self):
-    for record in self:
-        record.total_area = record.living_area + record.garden_area
+    @api.depends("living_area", "garden_area")
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
