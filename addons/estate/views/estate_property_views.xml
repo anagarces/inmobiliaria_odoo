@@ -26,9 +26,11 @@
             <field name="arch" type="xml">
                 <form>
                 <!--Botones en cabecera para SOLD y CANCEL-->
+                <!---Barra de estado-->
                     <header>
                         <button name="action_set_sold" type="object" string="SOLD"/>
                         <button name="action_set_cancel" type="object" string="CANCEL"/>
+                        <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                     </header>
                     <sheet>
                         <div class="oe_title">
