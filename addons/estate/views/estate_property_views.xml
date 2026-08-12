@@ -113,9 +113,11 @@
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
-                <field name="living_area" string="Living Area (sqm)"/>
+                <field name="living_area" string="Living Area (sqm)"
+                filter_domain="[('living_area', '>=', self)]"/> <!--personalizacion de filtro de un campo concreto-->
                 <field name="facades"/>
-                <!--Busqueda predefinida desde la vista, atajo-->
+
+                <!--Boton de busqueda predefinida desde la vista, atajo-->
                 <filter name="available" string="Available"
                         domain="[('state', 'in', ['new', 'offer_received'])]"/>
 
