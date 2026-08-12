@@ -5,16 +5,19 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list>
+            <list decoration-success="state in ('offer_received', 'offer_accepted')"
+                decoration-bf="state == 'offer_accepted'"
+                decoration-muted="state == 'sold'">
                 <field name="name" string="Title"/>
                 <field name="tag_ids" widget="many2many_tags"/>
                 <field name="property_type_id"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
+                <field name="state"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
-                <field name="date_availability" string="Available from"/>
+                <field name="date_availability" string="Available from" optional="hide"/>
             </list>
         </field>
     </record>   
@@ -28,8 +31,10 @@
                 <!--Botones en cabecera para SOLD y CANCEL-->
                 <!---Barra de estado-->
                     <header>
-                        <button name="action_set_sold" type="object" string="SOLD"/>
-                        <button name="action_set_cancel" type="object" string="CANCEL"/>
+                        <button name="action_set_sold" type="object" string="SOLD"
+                        invisible="state in ('sold', 'cancelled')"/>
+                        <button name="action_set_cancel" type="object" string="CANCEL"
+                        invisible="state in ('sold', 'cancelled')"/>
                         <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                     </header>
                     <sheet>
@@ -40,8 +45,8 @@
                         </div>
                         <group>
                             <group>
-                                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}/>
-                                <field name="property_type_id" options="{'no_create': True, 'no_open': True}/>
+                                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                                <field name="property_type_id" options="{'no_create': True, 'no_open': True}"/>
                                 <field name="postcode"/>
                                 <field name="date_availability" string="Available From"/>
                             </group>
@@ -63,8 +68,8 @@
                                     <field name="facades"/>
                                     <field name="garage"/>
                                     <field name="garden"/>
-                                    <field name="garden_area" string="Garden Area (sqm)"/>
-                                    <field name="garden_orientation"/>
+                                    <field name="garden_area" string="Garden Area (sqm)" invisible="not garden"/>
+                                    <field name="garden_orientation" invisible="not garden"/>
                                     <field name="total_area"/>
                                 </group>
                             </page>
@@ -77,9 +82,9 @@
                             </page>
                             <!---Pestana Ofertas-->
                             <page string="Offers">
-                                <field name="offer_ids">
-                                    <!---<list editable="bottom"> -->
-                                    <list>
+                                <field name="offer_ids" readonly="state in ('offer_accepted', 'sold', 'cancelled')">
+                                    <list editable="bottom" decoration-success="status == 'accepted'" 
+                                    decoration-danger="status == 'refused'">
                                         <field name="price"/>
                                         <field name="partner_id"/>
                                         <field name="validity"/>
@@ -108,9 +113,11 @@
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
-                <field name="living_area" string="Living Area (sqm)"/>
+                <field name="living_area" string="Living Area (sqm)"
+                filter_domain="[('living_area', '>=', self)]"/> <!--personalizacion de filtro de un campo concreto-->
                 <field name="facades"/>
-                <!--Busqueda predefinida desde la vista, atajo-->
+
+                <!--Boton de busqueda predefinida desde la vista, atajo-->
                 <filter name="available" string="Available"
                         domain="[('state', 'in', ['new', 'offer_received'])]"/>
 
@@ -126,5 +133,8 @@
             <field name="name">Properties</field>
             <field name="res_model">estate.property</field>
             <field name="view_mode">list,form</field>
+            <field name="context">{'search_default_available': 1}</field>
     </record>
+
+
 </odoo>
