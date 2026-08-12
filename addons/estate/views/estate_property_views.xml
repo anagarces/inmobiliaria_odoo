@@ -14,7 +14,7 @@
                 <field name="living_area"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
-                <field name="date_availability" string="Available from"/>
+                <field name="date_availability" string="Available from" optional="hide"/>
             </list>
         </field>
     </record>   
@@ -80,7 +80,7 @@
                             <!---Pestana Ofertas-->
                             <page string="Offers">
                                 <field name="offer_ids" readonly="state in ('offer_accepted', 'sold', 'cancelled')">
-                                    <list editable="bottom">
+                                    <list editable="bottom" decoration-success="status == 'accepted'" decoration-danger="status == 'refused'">
                                         <field name="price"/>
                                         <field name="partner_id"/>
                                         <field name="validity"/>
