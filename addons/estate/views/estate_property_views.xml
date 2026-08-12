@@ -79,9 +79,8 @@
                             </page>
                             <!---Pestana Ofertas-->
                             <page string="Offers">
-                                <field name="offer_ids">
-                                    <!---<list editable="bottom"> -->
-                                    <list>
+                                <field name="offer_ids" readonly="state in ('offer_accepted', 'sold', 'cancelled')">
+                                    <list editable="bottom">
                                         <field name="price"/>
                                         <field name="partner_id"/>
                                         <field name="validity"/>
