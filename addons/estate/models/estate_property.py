@@ -73,6 +73,8 @@ class EstateProperty(models.Model):
                     "The selling price cannot be lower than 90% of the expected price."
                 )
 
+
+
     #Calcular area total de una propiedad
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -109,3 +111,11 @@ class EstateProperty(models.Model):
             if record.state == "sold":
                 raise UserError("A sold property cannot be cancelled.")
             record.state = "cancelled"
+
+
+    #No permite eliminar una propiedad que no sea nueva o cancelada
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_new_or_cancelled(self):
+        for record in self:
+            if record.state not in ('new', 'cancelled'):
+                raise UserError("No puedes eliminar una propiedad que no esté en estado New o Cancelled.")

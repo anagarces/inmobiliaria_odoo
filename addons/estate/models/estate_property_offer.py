@@ -1,6 +1,6 @@
 from odoo import models, fields, api
 from datetime import timedelta
-
+from odoo.exceptions import UserError
 
 class EstatePropertyOffer(models.Model):
 
@@ -58,3 +58,18 @@ class EstatePropertyOffer(models.Model):
     def action_refuse_offer(self):
         for record in self:
             record.status = "refused"
+
+    @api.model
+    def create(self, vals):
+        property_record = self.env['estate.property'].browse(vals['property_id'])
+
+        if property_record.offer_ids:
+            max_price = max(property_record.offer_ids.mapped('price'))
+            if vals['price'] < max_price:
+                raise UserError(
+                    "The offer amount must be higher than the existing offers."
+                )
+
+        property_record.state = "offer_received"
+
+        return super().create(vals)
