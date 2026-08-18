@@ -8,6 +8,12 @@ class EstateProperty(models.Model):
     _description = "Real Estate Property"
     _order = "id desc"
 
+    #SQL constrains
+    _sql_constraints = [
+        ('check_selling_price', 'CHECK(selling_price >= 0)', 'The selling price must be positive.'),
+        ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive.'),
+    ]
+
     name = fields.Char(required=True, default="Unknown")
     description = fields.Text()
     postcode = fields.Char()
@@ -53,28 +59,6 @@ class EstateProperty(models.Model):
     total_area = fields.Float(compute="_compute_total_area")
     best_price = fields.Float(compute="_compute_best_price")
 
-
-
-    #SQL constrains
-    _sql_constraints = [
-        ('check_selling_price', 'CHECK(selling_price >= 0)', 'The selling price must be positive.'),
-        ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive.'),
-    ]
-
-    #Python constraint 
-    @api.constrains('selling_price', 'expected_price')
-    def _check_selling_price(self):
-        for record in self:
-            if float_is_zero(record.selling_price, precision_rounding=0.01):
-                continue  #todavía no se vendió, no hay nada que validar
-
-            if float_compare(record.selling_price, record.expected_price * 0.9, precision_rounding=0.01) < 0:
-                raise ValidationError(
-                    "The selling price cannot be lower than 90% of the expected price."
-                )
-
-
-
     #Calcular area total de una propiedad
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -87,7 +71,19 @@ class EstateProperty(models.Model):
         for record in self:
             record.best_price = max(record.offer_ids.mapped('price'), default=0)
 
-    #Rellenar o limpiar datos desde la interfaz 
+    #Python constraint
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if float_is_zero(record.selling_price, precision_rounding=0.01):
+                continue  #todavía no se vendió, no hay nada que validar
+
+            if float_compare(record.selling_price, record.expected_price * 0.9, precision_rounding=0.01) < 0:
+                raise ValidationError(
+                    "The selling price cannot be lower than 90% of the expected price."
+                )
+
+    #Rellenar o limpiar datos desde la interfaz
     @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden:
@@ -96,6 +92,13 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
+    #No permite eliminar una propiedad que no sea nueva o cancelada
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_new_or_cancelled(self):
+        for record in self:
+            if record.state not in ('new', 'cancelled'):
+                raise UserError("No puedes eliminar una propiedad que no esté en estado New o Cancelled.")
 
     #ACCIONES para botones en el header de la vista estate property
     #una propiedad cancelada no puede ser vendida
@@ -111,11 +114,3 @@ class EstateProperty(models.Model):
             if record.state == "sold":
                 raise UserError("A sold property cannot be cancelled.")
             record.state = "cancelled"
-
-
-    #No permite eliminar una propiedad que no sea nueva o cancelada
-    @api.ondelete(at_uninstall=False)
-    def _unlink_except_new_or_cancelled(self):
-        for record in self:
-            if record.state not in ('new', 'cancelled'):
-                raise UserError("No puedes eliminar una propiedad que no esté en estado New o Cancelled.")
