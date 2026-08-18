@@ -8,6 +8,11 @@ class EstatePropertyOffer(models.Model):
     _description = "Property Offer"
     _order = "price desc"
 
+    #SQL constraint
+    _sql_constraints = [
+        ('check_price', 'CHECK(price > 0)', 'The offer price must be strictly positive.'),
+    ]
+
     price = fields.Float()
     status = fields.Selection(
         string="Status",
@@ -28,12 +33,6 @@ class EstatePropertyOffer(models.Model):
     store=True
 )
 
-    #SQL constraint
-
-    _sql_constraints = [
-        ('check_price', 'CHECK(price > 0)', 'The offer price must be strictly positive.'),
-    ]
-
     #Calcular validez de una oferta
     @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):
@@ -46,18 +45,6 @@ class EstatePropertyOffer(models.Model):
             start_date = record.create_date.date() if record.create_date else fields.Date.today()
             record.validity = (record.date_deadline - start_date).days
 
-
-#Acciones para botones en page de ofertas
-    def action_accept_offer(self):
-        for record in self:
-            record.status = "accepted"
-            record.property_id.buyer_id = record.partner_id
-            record.property_id.selling_price = record.price
-            record.property_id.state = "offer_accepted"
-
-    def action_refuse_offer(self):
-        for record in self:
-            record.status = "refused"
 
     @api.model
     def create(self, vals):
@@ -73,3 +60,15 @@ class EstatePropertyOffer(models.Model):
         property_record.state = "offer_received"
 
         return super().create(vals)
+
+#Acciones para botones en page de ofertas
+    def action_accept_offer(self):
+        for record in self:
+            record.status = "accepted"
+            record.property_id.buyer_id = record.partner_id
+            record.property_id.selling_price = record.price
+            record.property_id.state = "offer_accepted"
+
+    def action_refuse_offer(self):
+        for record in self:
+            record.status = "refused"
