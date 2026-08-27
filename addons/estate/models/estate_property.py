@@ -52,12 +52,19 @@ class EstateProperty(models.Model):
         copy=False
     )
     property_type_id = fields.Many2one("estate.property.type")
+    company_id = fields.Many2one(
+    'res.company',
+    string="Agency",
+    required=True,
+    default=lambda self: self.env.company,
+)
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     salesperson_id = fields.Many2one("res.users", string="Seller", default=lambda self: self.env.user)
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id")
     total_area = fields.Float(compute="_compute_total_area")
     best_price = fields.Float(compute="_compute_best_price")
+    
 
     #Calcular area total de una propiedad
     @api.depends("living_area", "garden_area")
