@@ -22,5 +22,5 @@ class EstateProperty(models.Model):
                 }),
                 ],
             }
-            self.env['account.move'].create(invoice_vals)
+            self.env['account.move'].sudo().create(invoice_vals)
         return super().action_set_sold()
