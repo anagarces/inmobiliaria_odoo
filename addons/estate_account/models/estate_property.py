@@ -6,6 +6,7 @@ class EstateProperty(models.Model):
 
     def action_set_sold(self):
         for record in self:
+            record.check_access('write')
             invoice_vals = {
                 'partner_id': record.buyer_id.id,
                 'move_type': 'out_invoice',
