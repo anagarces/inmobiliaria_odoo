@@ -113,6 +113,8 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == "cancelled":
                 raise UserError("A cancelled property cannot be set as sold.")
+            if not record.offer_ids.filtered(lambda o: o.status == 'accepted'):
+                raise UserError("A property cannot be sold without an accepted offer.")
             record.state = "sold"
 
     #Una propiedad vendida no puede ser cancelada
